@@ -18,24 +18,56 @@ describe Composer do
       end
     end
 
-    context "without headings" do
-      let(:section1) { double(formatted_text: text1,
-                                     heading: nil) }
-      let(:section2) { double(formatted_text: text2,
-                                     heading: nil) }
-      let(:section3) { double(formatted_text: text3,
-                                     heading: nil) }
+    context "just text" do
+      let(:section1) { double(text:    text1,
+                              heading: nil) }
+      let(:section2) { double(text:    text2,
+                              heading: nil) }
+      let(:section3) { double(text:    text3,
+                              heading: nil) }
 
       it "appends sections together" do
         expect( subject ).to eq <<END
 This is section one.
 
+
 This is section two.
+
 
 This is section three.
 
 Which has two paragraphs.
 END
+      end
+    end
+
+    context "with headings" do
+      let(:section1) { double(text:    text1,
+                              heading: 'Section 1') }
+      let(:section2) { double(text:    text2,
+                              heading: 'Section 2') }
+      let(:section3) { double(text:    text3,
+                              heading: 'Section 3') }
+
+      it "appends sections together" do
+        expect( subject ).to eq <<END
+Section 1
+
+This is section one.
+
+
+Section 2
+
+This is section two.
+
+
+Section 3
+
+This is section three.
+
+Which has two paragraphs.
+END
+
       end
     end
   end

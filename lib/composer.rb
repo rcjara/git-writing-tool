@@ -1,18 +1,18 @@
 module GWT
   class Composer
-    attr_reader :sections
+    attr_reader :displayers
 
     def initialize(*args)
-      @sections = []
+      @displayers = []
     end
 
     def section(section)
-      sections << section
+      displayers << SectionDisplayer.new(section)
     end
 
     def formatted_text
-      sections.collect(&:formatted_text)
-              .join("\n")
+      displayers.collect(&:formatted_text)
+                .join("\n\n")
     end
 
     def self.compose(*args, &block)
