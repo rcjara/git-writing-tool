@@ -1,4 +1,5 @@
 require_relative 'composer.rb'
+require_relative 'section.rb'
 require_relative 'section_displayer.rb'
 
 module GWT
