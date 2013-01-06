@@ -54,11 +54,15 @@ Which has two paragraphs.
       expect( Composer.clean_filename("dest") ).to eq("dest.txt")
     end
 
+    it "add a .txt extension if it does not already end with one" do
+      expect( Composer.clean_filename("dest.rb") ).to eq("dest.rb.txt")
+    end
+
     it "returns nil if given nil" do
       expect( Composer.clean_filename(nil) ).to be_nil
     end
 
-    it "returns the original name if it had an extension" do
+    it "returns the original name if it had a '.txt' extension" do
       expect( Composer.clean_filename("dest.txt") ).to eq("dest.txt")
     end
   end

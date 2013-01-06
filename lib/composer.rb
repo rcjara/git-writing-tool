@@ -22,7 +22,11 @@ module GWT
     def self.clean_filename(filename)
       return nil if filename.nil?
 
-      File.extname(filename).empty? ? filename + '.txt' : filename
+      if filename =~ /\.txt$/
+        filename
+      else
+        filename + '.txt'
+      end
     end
   end
 end
