@@ -1,9 +1,12 @@
 module GWT
   class Composer
-    attr_reader :displayers
+    attr_reader :displayers, :filename
 
-    def initialize(*args)
+    def initialize(filename = nil, &block)
+      @filename = self.class.clean_filename(filename)
       @displayers = []
+
+      instance_eval &block if block
     end
 
     def section(section = nil, &block)
@@ -16,10 +19,10 @@ module GWT
                 .join("\n")
     end
 
-    def self.compose(*args, &block)
-      composer = self.new(*args)
-      composer.instance_eval &block
-      composer.formatted_text
+    def self.clean_filename(filename)
+      return nil if filename.nil?
+
+      File.extname(filename).empty? ? filename + '.txt' : filename
     end
   end
 end
