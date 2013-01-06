@@ -12,6 +12,7 @@ module GWT
 
     def set_default_values!
       @text = ''
+      @heading = nil
     end
 
     def method_missing(method_name, *args, &block)

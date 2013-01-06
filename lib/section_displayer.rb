@@ -17,7 +17,7 @@ module GWT
 
     def cleaned_heading
       return '' if section.heading.nil?
-      cr(section.heading) + "\n"
+      "\n" + cr(section.heading) + "\n"
     end
 
     # 'cr' stands for carriage return

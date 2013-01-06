@@ -7,6 +7,8 @@ module GWT
   def compose(*args, &block)
     GWT::Composer.compose(*args, &block)
   end
-end
 
-include GWT
+  def file(*args, &block)
+    Section.new(FileReader.read(*args), &block)
+  end
+end

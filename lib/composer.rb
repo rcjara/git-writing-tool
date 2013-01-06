@@ -6,13 +6,14 @@ module GWT
       @displayers = []
     end
 
-    def section(section)
+    def section(section = nil, &block)
+      section = Section.new(&block) unless section
       displayers << SectionDisplayer.new(section)
     end
 
     def formatted_text
       displayers.collect(&:formatted_text)
-                .join("\n\n")
+                .join("\n")
     end
 
     def self.compose(*args, &block)
