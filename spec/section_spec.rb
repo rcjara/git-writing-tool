@@ -2,16 +2,30 @@ require_relative 'spec_helper'
 
 describe Section do
   describe "#new" do
-    it "always has text" do
+    it "has a default text value" do
       expect( subject.text ).to eq('')
     end
 
-    it "takes a block and arbitrary values" do
+    it "can take a block and arbitrary values" do
       section = Section.new do
         blarg 'whatever'
       end
 
       expect( section.blarg ).to eq('whatever')
+    end
+
+    it "can take a hash of arbitrary values" do
+      section = Section.new( { blarg: "whatever" } )
+
+      expect( section.blarg ).to eq("whatever")
+    end
+
+    it "overides its hash values with block values" do
+      section = Section.new( {text: "Hello\n"} ) do
+        text "Goodbye\n"
+      end
+
+      expect( section.text ).to eq("Goodbye\n")
     end
   end
 

@@ -1,11 +1,17 @@
 module GWT
   class Section
-    def initialize(&block)
+    def initialize(args = {}, &block)
+      set_default_values!
+
+      args.each_pair do |method, value|
+        send(method, value)
+      end
+
       instance_eval &block if block
     end
 
-    def text
-      @text || ''
+    def set_default_values!
+      @text = ''
     end
 
     def method_missing(method_name, *args, &block)
