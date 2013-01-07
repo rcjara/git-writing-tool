@@ -51,7 +51,7 @@ It is doubtful that you will find this conclusion satisfying.
 end
 
 When /^I run compose$/ do
-  run_file 'composition'
+  GWT::run_file 'composition'
 end
 
 When /^I read '(\S+)'$/ do |filename|

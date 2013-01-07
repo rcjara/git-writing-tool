@@ -4,6 +4,12 @@ require_relative 'section_displayer.rb'
 require_relative 'composer.rb'
 
 module GWT
+  def self.run_file(filename)
+    full_filename = (filename =~ /\./) ? filename : filename + '.rb'
+
+    GWT::Runner.new(full_filename).instance_eval(File.read(full_filename))
+  end
+
   class Runner
     def initialize(filename = nil)
       @filename = filename
