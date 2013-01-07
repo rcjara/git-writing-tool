@@ -1,6 +1,6 @@
 describe "#get_calling_file" do
   it "returns the file calling the function" do
-    expect( File.basename(get_calling_file) ).to eq("git_writing_tool_spec.rb")
+    expect( Runner.new.get_calling_file ).to eq("git_writing_tool_spec.rb")
   end
 end
 

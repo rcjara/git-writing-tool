@@ -4,16 +4,26 @@ require_relative 'section_displayer.rb'
 require_relative 'composer.rb'
 
 module GWT
-  def compose(filename = nil, &block)
-    filename ||= get_calling_file
-    composer = GWT::Composer.new(filename, &block)
-    File.open(composer.filename, 'w') do |f|
-      f << composer.formatted_text
+  class Runner
+    def initialize(filename = nil)
+      @filename = filename
     end
-  end
 
+    def compose(filename = nil, &block)
+      filename ||= @filename
+      composer = GWT::Composer.new(filename, &block)
 
-  def get_calling_file
-    caller[0].sub(/:.*?$/, '')
+      puts "composer has been run"
+      puts "composer.filename: #{composer.filename}"
+      File.open(composer.filename, 'w') do |f|
+        f << composer.formatted_text
+      end
+    end
+
+    def get_calling_file
+      full_file_path = caller[0].sub(/:.*?$/, '')
+      File.basename(full_file_path)
+    end
+
   end
 end
