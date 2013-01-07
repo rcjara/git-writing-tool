@@ -12,9 +12,6 @@ module GWT
     end
   end
 
-  def file(*args, &block)
-    Section.new(FileReader.read(*args), &block)
-  end
 
   def get_calling_file
     caller[0].sub(/:.*?$/, '')

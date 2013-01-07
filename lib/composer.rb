@@ -14,6 +14,12 @@ module GWT
       displayers << SectionDisplayer.new(section)
     end
 
+    def file(fn, &block)
+      filename = self.class.clean_filename(fn)
+      puts "file called: #{filename}"
+      Section.new(FileReader.read(filename), &block)
+    end
+
     def formatted_text
       displayers.collect(&:formatted_text)
                 .join("\n")
@@ -22,11 +28,7 @@ module GWT
     def self.clean_filename(filename)
       return nil if filename.nil?
 
-      if filename =~ /\.txt$/
-        filename
-      else
-        filename + '.txt'
-      end
+      filename.sub(/(?<=\S)(\..*$)/, '') + '.txt'
     end
   end
 end

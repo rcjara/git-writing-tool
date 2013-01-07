@@ -55,7 +55,7 @@ Which has two paragraphs.
     end
 
     it "add a .txt extension if it does not already end with one" do
-      expect( Composer.clean_filename("dest.rb") ).to eq("dest.rb.txt")
+      expect( Composer.clean_filename("dest.rb") ).to eq("dest.txt")
     end
 
     it "returns nil if given nil" do
