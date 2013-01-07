@@ -1,0 +1,7 @@
+source 'http://rubygems.org'
+
+group :test do
+  gem 'rspec'
+  gem 'cucumber'
+  gem 'fakefs', git: 'git://github.com/defunkt/fakefs'
+end
