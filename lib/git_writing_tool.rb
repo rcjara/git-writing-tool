@@ -13,8 +13,6 @@ module GWT
       filename ||= @filename
       composer = GWT::Composer.new(filename, &block)
 
-      puts "composer has been run"
-      puts "composer.filename: #{composer.filename}"
       File.open(composer.filename, 'w') do |f|
         f << composer.formatted_text
       end
