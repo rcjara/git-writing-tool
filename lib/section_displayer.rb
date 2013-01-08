@@ -13,6 +13,7 @@ module GWT
 
     def cleaned_text
       text.lines_joined
+          .double_spaces_between_sentences
           .cr
           .to_s
     end
@@ -54,7 +55,13 @@ module GWT
       end
 
       def lines_joined
-        self.class.new text.gsub(/(?<=\S)(\n)(?=\S)/,'  ')
+        self.class.new text.gsub(/(?<=\S)(\n)(?=\S)/,' ')
+      end
+
+      def double_spaces_between_sentences
+        self.class.new(text.gsub(/([\.\?\!])( )(?=\S)/) do |match|
+          match[0] + '  '
+        end)
       end
 
       # 'cr' stands for carriage return
