@@ -69,62 +69,14 @@ Which has two paragraphs.
 
 
   describe ".formatted_text" do
-    describe "with premade sections" do
-      subject do
-        # Necessary to make the sections visible within
-        # the instance_eval of the compose method
-        sec1, sec2, sec3 = section1, section2, section3
-
-        Composer.new do
-          section sec1
-          section sec2
-          section sec3
-        end
-      end
-
-      context "just text" do
-        let(:section1) { double(text:    text1,
-                                heading: nil) }
-        let(:section2) { double(text:    text2,
-                                heading: nil) }
-        let(:section3) { double(text:    text3,
-                                heading: nil) }
-
-        it "appends sections together" do
-          expect( subject.formatted_text ).to eq(simple_result)
-        end
-      end
-
-      context "with headings" do
-        let(:section1) { double(text:    text1,
-                                heading: 'Section 1') }
-        let(:section2) { double(text:    text2,
-                                heading: 'Section 2') }
-        let(:section3) { double(text:    text3,
-                                heading: 'Section 3') }
-
-        it "appends sections together" do
-          expect( subject.formatted_text ).to eq(result_with_headings)
-        end
-      end
-    end
-
-    describe "with block defined sections" do
+    describe "with block defined text sections" do
       subject do
         t1, t2, t3 = text1, text2, text3
 
         Composer.new do
-          section do
-            text t1
-          end
-
-          section do
-            text t2
-          end
-
-          section do
-            text t3
-          end
+          text t1
+          text t2
+          text t3
         end
       end
 

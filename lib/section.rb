@@ -1,7 +1,11 @@
 module GWT
   class Section
+    attr_reader :subsections, :body
+
     def initialize(args = {}, &block)
       set_default_values!
+
+      @subsections = []
 
       args.each_pair do |method, value|
         send(method, value)
@@ -10,9 +14,26 @@ module GWT
       instance_eval &block if block
     end
 
-    def set_default_values!
-      @text = ''
-      @heading = nil
+    def section(attributes = {}, &block)
+      subsections << Section.new(attributes, &block)
+    end
+
+    def file(filename, &block)
+      attributes  = FileReader.read(filename)
+      subsections << Section.new(attributes, &block)
+    end
+
+    def text(str = '', &block)
+      subsections << Section.new({ body: str }, &block)
+    end
+
+    def body(str = nil)
+      return @body if str.nil?
+      @body = str
+    end
+
+    def formatted_text
+      displayer.formatted_text
     end
 
     def method_missing(method_name, *args, &block)
@@ -28,6 +49,15 @@ module GWT
     end
 
     private
+
+    def set_default_values!
+      @body = ''
+      @heading = nil
+    end
+
+    def displayer
+      @displayer ||= SectionDisplayer.new(self)
+    end
 
     def has_var?(var_name)
       instance_variables.include? clean_var_name(var_name)

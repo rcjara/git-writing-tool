@@ -17,10 +17,10 @@ This is a sentence that, while it might not be the most elegant or gramatical, b
     END
   end
 
-  describe ".cleaned_text" do
+  describe ".cleaned_body" do
     it "appends together fractions of sentences written accross multiple lines" do
-      section = double('section', text: multi_line_sentences)
-      expect( SectionDisplayer.new(section).cleaned_text )
+      section = double('section', body: multi_line_sentences)
+      expect( SectionDisplayer.new(section).cleaned_body )
         .to eq(multi_line_sentences_output)
     end
   end

@@ -4,9 +4,8 @@ Feature: Use a composition file to create a single text document out of many sma
     Given a composition directory
       And a directory for the sections
 
-  Scenario: Writing to a file
-    Given a basic composition file
-      And a few basic section files
+  Scenario: A basic composition from files
+    Given a few basic section files
+      And a basic composition file
      When I run compose
      Then the basic composition should be written to a text file
-

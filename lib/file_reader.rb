@@ -3,7 +3,8 @@ module GWT
     MULTI_TAG_REGEX = /(?<pretext>.*?)(?<name>^\S+):\s+(?<content>.*?)(?<rest>^\S+:\s.*)/m
     ONE_TAG_REGEX   = /(?<pretext>.*?)(?<name>^\S+):\s+(?<content>.*)/m
 
-    def self.read(filename)
+    def self.read(fn)
+      filename = clean_filename(fn)
       parse(File.read(filename))
     end
 
@@ -20,7 +21,7 @@ module GWT
 
         { name => content }
       else
-        { text: text }
+        { body: text }
       end
     end
 
@@ -34,6 +35,12 @@ module GWT
 
     def self.multi_line?(text)
       text.scan(/\n/).length > 1
+    end
+
+    def self.clean_filename(filename)
+      return nil if filename.nil?
+
+      filename.sub(/(?<=\S)(\..*$)/, '') + '.txt'
     end
   end
 end

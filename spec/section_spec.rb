@@ -2,8 +2,12 @@ require_relative 'spec_helper'
 
 describe Section do
   describe "#new" do
-    it "has a default text value" do
-      expect( subject.text ).to eq('')
+    it "has a default body value" do
+      expect( subject.body ).to eq('')
+    end
+
+    it "has 0 subsections" do
+      expect( subject.subsections.length ).to eq(0)
     end
 
     it "can take a block and arbitrary values" do
@@ -21,13 +25,29 @@ describe Section do
     end
 
     it "overides its hash values with block values" do
-      section = Section.new( {text: "Hello\n"} ) do
-        text "Goodbye\n"
+      section = Section.new( {heading: "Hello\n"} ) do
+        heading "Goodbye\n"
       end
 
-      expect( section.text ).to eq("Goodbye\n")
+      expect( section.heading ).to eq("Goodbye\n")
     end
+
+
   end
+
+  describe ".text" do
+    it "can take multiple text subsections" do
+      section = Section.new do
+        text '1'
+        text '2'
+        text '3'
+      end
+
+      expect( section.subsections.length ).to eq(3)
+    end
+
+  end
+
 
   describe "arbitrary value setting" do
     context "on setting a value for bada" do
@@ -42,6 +62,55 @@ describe Section do
       it "returns the right value for bada" do
         expect( subject.bada ).to eq('bing')
       end
+    end
+  end
+
+  describe ".formatted_text" do
+    it "calls a section displayer to get its formatted text" do
+      section = Section.new
+      SectionDisplayer.should_receive(:new)
+                      .with(section)
+                      .and_return(double.as_null_object)
+      section.formatted_text
+    end
+
+    context "with a nested structure" do
+      subject do
+        Section.new do
+          text "Hello"
+
+          section do
+            heading "Nested Heading"
+            text "nested content 1"
+            text "nested content 2"
+          end
+
+          text "Goodbye"
+        end
+      end
+
+      it "displays properly" do
+        expect( subject.formatted_text ).to eq(
+          <<-END
+Hello
+
+
+Nested Heading
+
+
+nested content 1
+
+nested content 2
+
+Goodbye
+          END
+        )
+      end
+
+      it "has 3 subsections" do
+        expect( subject.subsections.length ).to eq(3)
+      end
+
     end
   end
 end

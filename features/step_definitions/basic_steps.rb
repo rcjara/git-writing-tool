@@ -10,9 +10,9 @@ end
 Given /^a basic composition file$/ do
   text = <<-END
 compose do
-  section file('sections/intro')
-  section file('sections/body')
-  section file('sections/conclusion')
+  file 'sections/intro'
+  file 'sections/body'
+  file 'sections/conclusion'
 end
   END
 

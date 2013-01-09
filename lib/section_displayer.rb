@@ -7,20 +7,27 @@ module GWT
     end
 
     def formatted_text
-      cleaned_heading +
-      cleaned_text
+      chunks = [cleaned_heading + cleaned_body] +
+               section.subsections.map(&:formatted_text)
+      chunks.reject(&:empty?)
+            .join("\n")
     end
 
-    def cleaned_text
-      text.lines_joined
+    def cleaned_body
+      return '' if section.body.empty?
+      Text.new(section.body)
+          .lines_joined
           .double_spaces_between_sentences
           .cr
           .to_s
     end
 
     def cleaned_heading
-      return '' if heading.empty?
-      "\n" + heading.cr.to_s + "\n"
+      return '' if section.heading.nil?
+      Text.new(section.heading)
+          .cr
+          .wrapped("\n")
+          .to_s
     end
 
     def self.compose(*args, &block)
@@ -30,14 +37,6 @@ module GWT
     end
 
     private
-
-    def text
-      Text.new(section.text)
-    end
-
-    def heading
-      Text.new(section.heading)
-    end
 
     class Text
       attr_reader :text
@@ -52,6 +51,10 @@ module GWT
 
       def to_s
         text
+      end
+
+      def wrapped(str)
+        self.class.new(str + text + str)
       end
 
       def lines_joined
