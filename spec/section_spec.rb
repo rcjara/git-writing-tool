@@ -45,8 +45,69 @@ describe Section do
 
       expect( section.subsections.length ).to eq(3)
     end
-
   end
+
+  describe ".file" do
+    it "can take multiple file subsections" do
+      FileReader.should_receive(:read)
+                .exactly(2).times
+                .with('some_file_name')
+                .and_return({does_not: 'matter'})
+
+      section = Section.new do
+        file 'some_file_name'
+        file 'some_file_name'
+      end
+
+      expect( section.subsections.length ).to eq(2)
+    end
+
+    it "is automatically passed the sections' directory" do
+      FileReader.should_receive(:read)
+                .with('sections/some_file_name')
+                .and_return({does_not: 'matter'})
+      section = Section.new do
+        directory 'sections'
+        file 'some_file_name'
+      end
+    end
+  end
+
+  describe ".directory" do
+    it "adds trailing '/'" do
+      section = Section.new do
+        directory 'some_dir'
+      end
+
+      expect( section.directory ).to eq('some_dir/')
+    end
+
+    it "does not add trailing '/' if already present" do
+      section = Section.new do
+        directory 'some_dir/'
+      end
+
+      expect( section.directory ).to eq('some_dir/')
+    end
+
+    it "can be nested" do
+      FileReader.should_receive(:read)
+                .with('outer_dir/inner_dir/file')
+                .and_return({does_not: 'matter'})
+
+      section = Section.new do
+        directory 'outer_dir'
+        section do
+          directory 'inner_dir'
+
+          file 'file'
+        end
+      end
+
+      expect( section.directory ).to eq('outer_dir/')
+    end
+  end
+
 
 
   describe "arbitrary value setting" do
@@ -96,7 +157,6 @@ Hello
 
 
 Nested Heading
-
 
 nested content 1
 

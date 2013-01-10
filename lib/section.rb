@@ -14,22 +14,36 @@ module GWT
       instance_eval &block if block
     end
 
-    def section(attributes = {}, &block)
+    def section(attr = {}, &block)
+      attributes = attr.merge({parent: self})
       subsections << Section.new(attributes, &block)
     end
 
     def file(filename, &block)
-      attributes  = FileReader.read(filename)
+      attributes  = FileReader.read(full_path + filename)
+                              .merge({parent: self})
       subsections << Section.new(attributes, &block)
     end
 
     def text(str = '', &block)
-      subsections << Section.new({ body: str }, &block)
+      subsections << Section.new({ body: str, parent: self }, &block)
+    end
+
+    def parent(new_parent = nil)
+      return @parent if new_parent.nil?
+      @parent = new_parent
     end
 
     def body(str = nil)
       return @body if str.nil?
       @body = str
+    end
+
+    def directory(dir = nil)
+      return @directory unless dir
+      #ensure dirname has a trailing '/'
+      dir_name = dir =~ %r{/$} ? dir : dir + '/'
+      @directory = dir_name
     end
 
     def formatted_text
@@ -50,9 +64,14 @@ module GWT
 
     private
 
+    def full_path
+      (parent ? parent.directory : '') + directory
+    end
+
     def set_default_values!
       @body = ''
       @heading = nil
+      @directory = ''
     end
 
     def displayer

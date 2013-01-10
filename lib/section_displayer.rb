@@ -26,7 +26,7 @@ module GWT
       return '' if section.heading.nil?
       Text.new(section.heading)
           .cr
-          .wrapped("\n")
+          .preceded("\n")
           .to_s
     end
 
@@ -55,6 +55,10 @@ module GWT
 
       def wrapped(str)
         self.class.new(str + text + str)
+      end
+
+      def preceded(str)
+        self.class.new(str + text)
       end
 
       def lines_joined
