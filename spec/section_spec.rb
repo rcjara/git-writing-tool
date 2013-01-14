@@ -10,18 +10,18 @@ describe Section do
       expect( subject.subsections.length ).to eq(0)
     end
 
-    it "can take a block and arbitrary values" do
+    it "can take a block with values" do
       section = Section.new do
-        blarg 'whatever'
+        body 'whatever'
       end
 
-      expect( section.blarg ).to eq('whatever')
+      expect( section.body ).to eq('whatever')
     end
 
-    it "can take a hash of arbitrary values" do
-      section = Section.new( { blarg: "whatever" } )
+    it "can take a hash of values" do
+      section = Section.new( { body: "whatever" } )
 
-      expect( section.blarg ).to eq("whatever")
+      expect( section.body ).to eq("whatever")
     end
 
     it "overides its hash values with block values" do
@@ -105,24 +105,6 @@ describe Section do
       end
 
       expect( section.directory ).to eq('outer_dir/')
-    end
-  end
-
-
-
-  describe "arbitrary value setting" do
-    context "on setting a value for bada" do
-      subject do
-        Section.new.tap { |s| s.bada 'bing' }
-      end
-
-      it "raises a method missing error if you try access other values" do
-        expect { subject.blarg }.to raise_error(NoMethodError)
-      end
-
-      it "returns the right value for bada" do
-        expect( subject.bada ).to eq('bing')
-      end
     end
   end
 
